@@ -16,4 +16,5 @@ Run `gpp -DTARGET=$(hostname) conkyrc.master > conkyrc.$(hostname)` to make a ho
 Sample Output
 --------------
 
-todo
+![Sample Output](https://github.com/hkramski/my-conkyrc/blob/master/Screenshot_20170322_215845.png "Sample Output")
+
