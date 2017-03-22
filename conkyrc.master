@@ -1,0 +1,310 @@
+--[[
+$Header: /home/kramski/ownCloud/stdconfig/home/kramski/RCS/conkyrc.master,v 1.23 2017/03/05 20:06:34 kramski Exp kramski $
+]]
+--[[
+#-----------------------------------------------------------------------------------------------------------------------------------
+#ifdef MASTER
+# $Id: conkyrc.master,v 1.23 2017/03/05 20:06:34 kramski Exp kramski $ (by kramski@web.de)
+#
+# This is a multi-target, master configuration file for conky.
+#
+# All constants have an optional L_abel variant for display and an internal V_alue.
+#
+# Run 
+#    gpp -DTARGET=$(hostname) conkyrc.master > conkyrc.$(hostname)
+# to make a host specific file.
+#
+# define TARGET haspl
+# define TARGET sandl
+# define TARGET cordl
+# define TARGET grandl
+#
+#endif
+#define FONT Noto-Sans:size=10
+#define GRAPHDIMS 23,0
+#ifeq TARGET sandl
+#define L_HOST SANDL
+#define V_HWMON 0 temp 1
+#define L_FS1 /
+#define V_FS1 /
+#define L_FS2 /home
+#define V_FS2 /home
+#define L_FS3 /mufu
+#define V_FS3 /mufu
+#define L_FS4 /data01
+#define V_FS4 /data01
+#define L_FS5 /data02
+#define V_FS5 /data02
+#define L_DISK1 sda
+#define V_DISK1 /dev/sda
+#define L_DISK2 sdb/sdc
+#define V_DISK2 /dev/sdb
+#define L_DISK3 sdd
+#define V_DISK3 /dev/sdd
+#define L_LANDEV LAN
+#define V_LANDEV enp6s0
+#define V_WLANDEV wlo1
+#endif
+#ifeq TARGET cordl
+#define L_HOST CORDL
+#define V_HWMON 0 temp 1
+#define L_FS1 /
+#define V_FS1 /
+#define L_FS2 /home
+#define V_FS2 /home
+#define L_FS3 /mufu
+#define V_FS3 /mufu
+#define L_FS4 /data01
+#define V_FS4 /data01
+#define L_DISK1 sda (win)
+#define V_DISK1 /dev/sda
+#define L_DISK2 sdf (data01)
+#define V_DISK2 /dev/sdf
+#define L_DISK3 sdg (sys)
+#define V_DISK3 /dev/sdg
+#define L_LANDEV LAN
+#define V_LANDEV enp2s0
+#define V_WLANDEV wlo1
+#endif
+#ifeq TARGET haspl
+#define L_HOST HASPL
+#define V_HWMON 0 temp 1
+#define L_FS1 /
+#define V_FS1 /
+#define L_FS2 /home
+#define V_FS2 /home
+#define L_FS3 /mufu
+#define V_FS3 /mufu
+#define L_FS4 /data01
+#define V_FS4 /data01
+#define L_DISK1 sda
+#define V_DISK1 /dev/sda
+#define L_DISK2 sdb
+#define V_DISK2 /dev/sdb
+#define L_LANDEV LAN
+#define V_LANDEV enp3s0
+#define V_WLANDEV wlo1
+#endif
+#ifeq TARGET grandl
+#define L_HOST GRANDL
+#define V_HWMON 0 temp 1
+#define L_FS1 /
+#define V_FS1 /
+#define L_FS2 /home
+#define V_FS2 /home
+#define L_FS3 /mufu
+#define V_FS3 /mufu
+#define L_DISK1 sda
+#define V_DISK1 /dev/sda
+#define L_LANDEV LAN
+#define V_LANDEV enp0s25
+#define V_WLANDEV wlp3s0
+#endif
+# This is a configuration file for conky, 
+# made from $Id: conkyrc.master,v 1.23 2017/03/05 20:06:34 kramski Exp kramski $ (by kramski@web.de)
+# to be used on TARGET.
+#-----------------------------------------------------------------------------------------------------------------------------------
+]]
+
+conky.config = {
+    alignment = 'top_right',
+    background = true,
+    border_width = 1,
+    color0 = 'white',
+    color1 = 'white',
+    cpu_avg_samples = 2,
+    default_color = 'white',
+    default_outline_color = 'white',
+    default_shade_color = 'white',
+    draw_borders = false,
+    draw_graph_borders = true,
+    draw_outline = false,
+    draw_shades = false,
+    extra_newline = false,
+    font = 'FONT',
+    gap_x = 10,
+    gap_y = 0,
+    maximum_width = 200,
+    minimum_height = 730,
+    minimum_width = 200,
+    net_avg_samples = 2,
+    no_buffers = true,
+    out_to_console = false,
+    out_to_stderr = false,
+    own_window = true,
+    own_window_argb_visual = true,
+    own_window_class = 'Conky',
+    own_window_hints = 'undecorated,below,skip_taskbar,sticky,skip_pager',
+    own_window_transparent = true,
+    own_window_type = 'normal',
+    short_units = true,
+    show_graph_range = false,
+    show_graph_scale = false,
+    stippled_borders = 0,
+    update_interval = 2.0,
+    uppercase = false,
+    use_spacer = 'none',
+    use_xft = true
+}
+
+conky.text = [[
+####################
+##### System   #####
+####################
+${color1}${font FONT:style=bold}L_HOST${font FONT:style=normal} ${color0}${execi 3600 uname -r}${alignr}${acpitemp}°C 
+#
+################
+##### LOAD #####
+################
+${voffset 5}#
+${color1}${font FONT:style=bold}LOAD${font FONT:style=normal} ${color0}${alignr}${loadavg}
+${loadgraph GRAPHDIMS}
+#
+###############
+##### CPU #####
+###############
+${color1}${font FONT:style=bold}CPU${font FONT:style=normal} ${color0}${alignr}${hwmon V_HWMON}°C ${freq}Mhz ${cpu cpu0}%
+${cpubar cpu0}
+${top name 1} $alignr ${top cpu 1}%
+${top name 2} $alignr ${top cpu 2}%
+${top name 3} $alignr ${top cpu 3}%
+${top name 4} $alignr ${top cpu 4}%
+#ifeq TARGET sandl
+${top name 5} $alignr ${top cpu 5}%
+#endif
+#ifeq TARGET grandl
+${top name 5} $alignr ${top cpu 5}%
+#endif
+#
+##############
+##### RAM ####
+##############
+${voffset 5}#
+${color1}${font FONT:style=bold}RAM${font FONT:style=normal} ${color0}${alignr}${mem}/${memmax} ${memperc}%
+${membar 5,}
+${top_mem name 1} $alignr ${top_mem mem_res 1}
+${top_mem name 2} $alignr ${top_mem mem_res 2}
+${top_mem name 3} $alignr ${top_mem mem_res 3}
+${top_mem name 4} $alignr ${top_mem mem_res 4}
+#ifeq TARGET sandl
+${top_mem name 5} $alignr ${top_mem mem_res 5}
+#endif
+#ifeq TARGET grandl
+${top_mem name 5} $alignr ${top_mem mem_res 5}
+#endif
+#
+###############
+##### Disk ####
+###############
+${voffset 5}#
+${color1}${font FONT:style=bold}DISK${font FONT:style=normal} ${color0}${alignr}${diskio}
+#
+#ifdef V_DISK1
+${color1}L_DISK1${color0}${alignr}${diskio_read V_DISK1}/${diskio_write V_DISK1} ${hddtemp V_DISK1}°C
+${diskiograph_read V_DISK1 GRAPHDIMS}
+${voffset -10}#
+${diskiograph_write V_DISK1 GRAPHDIMS}
+#endif
+#
+#ifdef V_DISK2
+${color1}L_DISK2${color0}${alignr}${diskio_read V_DISK2}/${diskio_write V_DISK2} ${hddtemp V_DISK2}°C
+${diskiograph_read V_DISK2 GRAPHDIMS}
+${voffset -10}#
+${diskiograph_write V_DISK2 GRAPHDIMS}
+#endif
+#
+#ifdef V_DISK3
+${color1}L_DISK3${color0}${alignr}${diskio_read V_DISK3}/${diskio_write V_DISK3} ${hddtemp V_DISK3}°C
+${diskiograph_read V_DISK3 GRAPHDIMS}
+${voffset -10}#
+${diskiograph_write V_DISK3 GRAPHDIMS}
+#endif
+#
+#ifdef V_FS1
+${color1}L_FS1${color0}${alignr}${fs_used V_FS1}/${fs_size V_FS1} ${fs_used_perc V_FS1}%
+${fs_bar V_FS1}
+#endif
+#
+#ifdef V_FS2
+${color2}L_FS2${color0}${alignr}${fs_used V_FS2}/${fs_size V_FS2} ${fs_used_perc V_FS2}%
+${fs_bar V_FS2}
+#endif
+#
+#ifdef V_FS3
+${color1}L_FS3${color0}${alignr}${fs_used V_FS3}/${fs_size V_FS3} ${fs_used_perc V_FS3}%
+${fs_bar V_FS3}
+#endif
+#
+#ifdef V_FS4
+${color1}L_FS4${color0}${alignr}${fs_used V_FS4}/${fs_size V_FS4} ${fs_used_perc V_FS4}%
+${fs_bar V_FS4}
+#endif
+#
+#ifdef V_FS5
+${color1}L_FS5${color0}${alignr}${fs_used V_FS5}/${fs_size V_FS5} ${fs_used_perc V_FS5}%
+${fs_bar V_FS5}
+#endif
+#
+##################
+#### Network #####
+##################
+${voffset 5}#
+${if_existing /proc/net/route V_LANDEV}#
+#
+# Wired
+#
+${color1}${font FONT:style=bold}L_LANDEV${font FONT:style=normal}${color0}
+${color1}Local${color0}${alignr}${addr V_LANDEV}
+${color1}Public${color0}${alignr}${execi 300 wget -q -o /dev/null -O /dev/stdout http://checkip.dyndns.org/ | cut -d : -f 2- | cut -d "<" -f -1}
+${color1}V_LANDEV${color0}${alignr}${downspeed V_LANDEV}/${upspeed V_LANDEV}
+${downspeedgraph V_LANDEV GRAPHDIMS}
+${voffset -10}#
+${upspeedgraph V_LANDEV GRAPHDIMS}
+${else}#
+${if_existing /proc/net/route V_WLANDEV}#
+#
+# Wifi
+#
+${color1}${font FONT:style=bold}WLAN${font FONT:style=normal}${color0}${alignr}${wireless_essid V_WLANDEV}
+${color1}Local${color0}${alignr}${addr V_WLANDEV}
+${color1}Public${color0}${alignr}${execi 3600 wget -q -o /dev/null -O /dev/stdout http://checkip.dyndns.org/ | cut -d : -f 2- | cut -d "<" -f -1}
+${color1}V_WLANDEV${color0}${alignr}${downspeed V_WLANDEV}/${upspeed V_WLANDEV}
+${downspeedgraph V_WLANDEV GRAPHDIMS}
+${voffset -10}#
+${upspeedgraph V_WLANDEV GRAPHDIMS}
+${else}#
+#
+# No network
+#
+${color1}No (known) network${color0}
+${voffset 5}#
+${endif}#
+${endif}#
+#
+#################
+#### MythTV #####
+#################
+#ifeq TARGET sandl
+${color1}${font FONT:style=bold}MYTH TV${font FONT:style=normal}${color0}
+${color1}${execi 30 wget -q -o /dev/null -O /dev/stdout http://sandl:6544/misc/overview.qsp  | grep -i "Encoder [34]" | cut -d ">" -f 2- | cut -d "<" -f -1 | fold -w24 -s}
+#endif
+#
+#ifeq TARGET cordl
+${color1}${font FONT:style=bold}MYTH TV${font FONT:style=normal}${color0}
+${color1}${execi 30 wget -q -o /dev/null -O /dev/stdout http://cordl.hnstr58.local:6544/misc/overview.qsp | grep -i "Encoder [12]" | cut -d ">" -f 2- | cut -d "<" -f -1 | fold -w24 -s}
+#endif
+#
+##################
+#### Battery #####
+##################
+#ifeq TARGET haspl
+${color1}${font FONT:style=bold}BATTERY${font FONT:style=normal}${color0}
+${battery}${alignr}${battery_time}
+${battery_bar}
+#endif
+#ifeq TARGET grandl
+${color1}${font FONT:style=bold}BATTERY${font FONT:style=normal}${color0}
+${battery}${alignr}${battery_time}
+${battery_bar}
+#endif
+]]
