@@ -1,10 +1,10 @@
 --[[
-$Header: /home/kramski/ownCloud/stdconfig/home/kramski/RCS/conkyrc.master,v 1.23 2017/03/05 20:06:34 kramski Exp kramski $
+$Header: /home/kramski/Knowncloud.hnstr58/_sync-full/_sync-medium/stdconfig/home/kramski/RCS/conkyrc.master,v 1.25 2017/11/01 20:35:53 kramski Exp kramski $
 ]]
 --[[
 #-----------------------------------------------------------------------------------------------------------------------------------
 #ifdef MASTER
-# $Id: conkyrc.master,v 1.23 2017/03/05 20:06:34 kramski Exp kramski $ (by kramski@web.de)
+# $Id: conkyrc.master,v 1.25 2017/11/01 20:35:53 kramski Exp kramski $ (by kramski@web.de)
 #
 # This is a multi-target, master configuration file for conky.
 #
@@ -21,7 +21,7 @@ $Header: /home/kramski/ownCloud/stdconfig/home/kramski/RCS/conkyrc.master,v 1.23
 #
 #endif
 #define FONT Noto-Sans:size=10
-#define GRAPHDIMS 23,0
+#define GRAPHDIMS 20,0
 #ifeq TARGET sandl
 #define L_HOST SANDL
 #define V_HWMON 0 temp 1
@@ -101,7 +101,7 @@ $Header: /home/kramski/ownCloud/stdconfig/home/kramski/RCS/conkyrc.master,v 1.23
 #define V_WLANDEV wlp3s0
 #endif
 # This is a configuration file for conky, 
-# made from $Id: conkyrc.master,v 1.23 2017/03/05 20:06:34 kramski Exp kramski $ (by kramski@web.de)
+# made from $Id: conkyrc.master,v 1.25 2017/11/01 20:35:53 kramski Exp kramski $ (by kramski@web.de)
 # to be used on TARGET.
 #-----------------------------------------------------------------------------------------------------------------------------------
 ]]
@@ -170,7 +170,7 @@ ${top name 2} $alignr ${top cpu 2}%
 ${top name 3} $alignr ${top cpu 3}%
 ${top name 4} $alignr ${top cpu 4}%
 #ifeq TARGET sandl
-${top name 5} $alignr ${top cpu 5}%
+#${top name 5} $alignr ${top cpu 5}%
 #endif
 #ifeq TARGET grandl
 ${top name 5} $alignr ${top cpu 5}%
@@ -187,7 +187,7 @@ ${top_mem name 2} $alignr ${top_mem mem_res 2}
 ${top_mem name 3} $alignr ${top_mem mem_res 3}
 ${top_mem name 4} $alignr ${top_mem mem_res 4}
 #ifeq TARGET sandl
-${top_mem name 5} $alignr ${top_mem mem_res 5}
+#${top_mem name 5} $alignr ${top_mem mem_res 5}
 #endif
 #ifeq TARGET grandl
 ${top_mem name 5} $alignr ${top_mem mem_res 5}
@@ -286,12 +286,12 @@ ${endif}#
 #################
 #ifeq TARGET sandl
 ${color1}${font FONT:style=bold}MYTH TV${font FONT:style=normal}${color0}
-${color1}${execi 30 wget -q -o /dev/null -O /dev/stdout http://sandl:6544/misc/overview.qsp  | grep -i "Encoder [34]" | cut -d ">" -f 2- | cut -d "<" -f -1 | fold -w24 -s}
+${color1}${execi 30 wget -q -o /dev/null -O /dev/stdout http://sandl:6544/misc/overview.qsp  | grep -i "Encoder [123]" | cut -d ">" -f 2- | cut -d "<" -f -1 | fmt -w28 -t}
 #endif
 #
 #ifeq TARGET cordl
 ${color1}${font FONT:style=bold}MYTH TV${font FONT:style=normal}${color0}
-${color1}${execi 30 wget -q -o /dev/null -O /dev/stdout http://cordl.hnstr58.local:6544/misc/overview.qsp | grep -i "Encoder [12]" | cut -d ">" -f 2- | cut -d "<" -f -1 | fold -w24 -s}
+${color1}${execi 30 wget -q -o /dev/null -O /dev/stdout http://cordl.hnstr58.local:6544/misc/overview.qsp | grep -i "Encoder [12]" | cut -d ">" -f 2- | cut -d "<" -f -1 | fmt -w28 -t}
 #endif
 #
 ##################
