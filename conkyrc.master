@@ -1,46 +1,45 @@
 --[[
-$Header: /home/kramski/Knowncloud.hnstr58/_sync-full/_sync-medium/stdconfig/home/kramski/RCS/conkyrc.master,v 1.25 2017/11/01 20:35:53 kramski Exp kramski $
-]]
---[[
 #-----------------------------------------------------------------------------------------------------------------------------------
 #ifdef MASTER
-# $Id: conkyrc.master,v 1.25 2017/11/01 20:35:53 kramski Exp kramski $ (by kramski@web.de)
+# conkyrc.master (by kramski@web.de)
 #
 # This is a multi-target, master configuration file for conky.
 #
 # All constants have an optional L_abel variant for display and an internal V_alue.
 #
 # Run 
-#    gpp -DTARGET=$(hostname) conkyrc.master > conkyrc.$(hostname)
+#    gpp -DTARGET=$(hostname) conkyrc.master >  $(HOME)/.conkyrc
 # to make a host specific file.
 #
 # define TARGET haspl
 # define TARGET sandl
 # define TARGET cordl
 # define TARGET grandl
+# define TARGET schwindl
+# define TARGET r0838
 #
 #endif
-#define FONT Noto-Sans:size=10
+#define FONT :size=10
 #define GRAPHDIMS 20,0
 #ifeq TARGET sandl
 #define L_HOST SANDL
 #define V_HWMON 0 temp 1
 #define L_FS1 /
 #define V_FS1 /
-#define L_FS2 /home
-#define V_FS2 /home
-#define L_FS3 /mufu
-#define V_FS3 /mufu
-#define L_FS4 /data01
-#define V_FS4 /data01
-#define L_FS5 /data02
-#define V_FS5 /data02
+#define L_FS2 /data01
+#define V_FS2 /data01
+#define L_FS3 /data02
+#define V_FS3 /data02
+#define L_FS4 /.../mufu
+#define V_FS4 /data01/mufu
 #define L_DISK1 sda
 #define V_DISK1 /dev/sda
-#define L_DISK2 sdb/sdc
+#define L_DISK2 sdb
 #define V_DISK2 /dev/sdb
-#define L_DISK3 sdd
-#define V_DISK3 /dev/sdd
+#define L_DISK3 md0
+#define V_DISK3 /dev/md0
+#define L_DISK4 sde
+#define V_DISK4 /dev/sde
 #define L_LANDEV LAN
 #define V_LANDEV enp6s0
 #define V_WLANDEV wlo1
@@ -58,10 +57,10 @@ $Header: /home/kramski/Knowncloud.hnstr58/_sync-full/_sync-medium/stdconfig/home
 #define V_FS4 /data01
 #define L_DISK1 sda (win)
 #define V_DISK1 /dev/sda
-#define L_DISK2 sdf (data01)
-#define V_DISK2 /dev/sdf
-#define L_DISK3 sdg (sys)
-#define V_DISK3 /dev/sdg
+#define L_DISK2 sde (data01)
+#define V_DISK2 /dev/sde
+#define L_DISK3 sdf(sys)
+#define V_DISK3 /dev/sdf
 #define L_LANDEV LAN
 #define V_LANDEV enp2s0
 #define V_WLANDEV wlo1
@@ -71,12 +70,10 @@ $Header: /home/kramski/Knowncloud.hnstr58/_sync-full/_sync-medium/stdconfig/home
 #define V_HWMON 0 temp 1
 #define L_FS1 /
 #define V_FS1 /
-#define L_FS2 /home
-#define V_FS2 /home
-#define L_FS3 /mufu
-#define V_FS3 /mufu
-#define L_FS4 /data01
-#define V_FS4 /data01
+#define L_FS2 /mufu
+#define V_FS2 /mufu
+#define L_FS3 /data01
+#define V_FS3 /data01
 #define L_DISK1 sda
 #define V_DISK1 /dev/sda
 #define L_DISK2 sdb
@@ -84,6 +81,7 @@ $Header: /home/kramski/Knowncloud.hnstr58/_sync-full/_sync-medium/stdconfig/home
 #define L_LANDEV LAN
 #define V_LANDEV enp3s0
 #define V_WLANDEV wlo1
+#define V_BATTERY BAT0
 #endif
 #ifeq TARGET grandl
 #define L_HOST GRANDL
@@ -99,15 +97,48 @@ $Header: /home/kramski/Knowncloud.hnstr58/_sync-full/_sync-medium/stdconfig/home
 #define L_LANDEV LAN
 #define V_LANDEV enp0s25
 #define V_WLANDEV wlp3s0
+#define V_BATTERY BAT0
 #endif
-# This is a configuration file for conky, 
-# made from $Id: conkyrc.master,v 1.25 2017/11/01 20:35:53 kramski Exp kramski $ (by kramski@web.de)
-# to be used on TARGET.
+#ifeq TARGET schwindl
+#define L_HOST SCHWINDL
+#define V_HWMON 0 temp 1
+#define L_FS1 /
+#define V_FS1 /
+#define L_FS2 /home
+#define V_FS2 /home
+#define L_DISK1 sda
+#define V_DISK1 /dev/sda
+#define L_DISK2 mmcblk2p2
+#define V_DISK2 /dev/mmcblk2p2
+#define L_LANDEV LAN
+#define V_LANDEV enp0s20u4
+#define V_WLANDEV wlp3s0
+#define V_BATTERY BAT1
+#endif
+#ifeq TARGET r0838
+#define L_HOST R0838
+#define V_HWMON 0 temp 1
+#define L_FS1 /
+#define V_FS1 /
+#define L_DISK1 nvme0n1p5
+#define V_DISK1 /dev/nvme0n1p5
+#define L_LANDEV LAN
+#define V_LANDEV enp4s0f4u2u3
+#define V_WLANDEV wlp1s0
+#define V_BATTERY BAT0
+#endif
+# This is a configuration file for conky, made from conkyrc.master (by kramski@web.de), to be used on TARGET.
 #-----------------------------------------------------------------------------------------------------------------------------------
 ]]
 
 conky.config = {
     alignment = 'top_right',
+#ifeq TARGET sandl
+    xinerama_head = 2,
+#endif
+#ifeq TARGET cordl
+    xinerama_head = 2,
+#endif
     background = true,
     border_width = 1,
     color0 = 'white',
@@ -124,9 +155,9 @@ conky.config = {
     font = 'FONT',
     gap_x = 10,
     gap_y = 0,
-    maximum_width = 200,
+    maximum_width = 240,
     minimum_height = 730,
-    minimum_width = 200,
+    minimum_width = 240,
     net_avg_samples = 2,
     no_buffers = true,
     out_to_console = false,
@@ -220,6 +251,13 @@ ${voffset -10}#
 ${diskiograph_write V_DISK3 GRAPHDIMS}
 #endif
 #
+#ifdef V_DISK4
+${color1}L_DISK4${color0}${alignr}${diskio_read V_DISK4}/${diskio_write V_DISK4} ${hddtemp V_DISK4}°C
+${diskiograph_read V_DISK4 GRAPHDIMS}
+${voffset -10}#
+${diskiograph_write V_DISK4 GRAPHDIMS}
+#endif
+#
 #ifdef V_FS1
 ${color1}L_FS1${color0}${alignr}${fs_used V_FS1}/${fs_size V_FS1} ${fs_used_perc V_FS1}%
 ${fs_bar V_FS1}
@@ -297,14 +335,9 @@ ${color1}${execi 30 wget -q -o /dev/null -O /dev/stdout http://cordl.hnstr58.loc
 ##################
 #### Battery #####
 ##################
-#ifeq TARGET haspl
+#ifdef V_BATTERY
 ${color1}${font FONT:style=bold}BATTERY${font FONT:style=normal}${color0}
-${battery}${alignr}${battery_time}
-${battery_bar}
-#endif
-#ifeq TARGET grandl
-${color1}${font FONT:style=bold}BATTERY${font FONT:style=normal}${color0}
-${battery}${alignr}${battery_time}
-${battery_bar}
+${battery V_BATTERY}${alignr}${battery_time V_BATTERY}
+${battery_bar V_BATTERY}
 #endif
 ]]
