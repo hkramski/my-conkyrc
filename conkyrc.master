@@ -19,8 +19,8 @@
 # define TARGET r0838
 #
 #endif
-#define FONT :size=10
-#define GRAPHDIMS 20,0
+#define FONT :size=9
+#define GRAPHDIMS 20,0 white 778899 0 -t
 #ifeq TARGET sandl
 #define L_HOST SANDL
 #define V_HWMON 0 temp 1
@@ -41,7 +41,7 @@
 #define L_DISK4 sde
 #define V_DISK4 /dev/sde
 #define L_LANDEV LAN
-#define V_LANDEV enp6s0
+#define V_LANDEV enp7s0
 #define V_WLANDEV wlo1
 #endif
 #ifeq TARGET cordl
@@ -172,7 +172,7 @@ conky.config = {
     show_graph_range = false,
     show_graph_scale = false,
     stippled_borders = 0,
-    update_interval = 2.0,
+    update_interval = 5.0,
     uppercase = false,
     use_spacer = 'none',
     use_xft = true
@@ -182,7 +182,7 @@ conky.text = [[
 ####################
 ##### System   #####
 ####################
-${color1}${font FONT:style=bold}L_HOST${font FONT:style=normal} ${color0}${execi 3600 uname -r}${alignr}${acpitemp}°C 
+${color1}${font FONT:style=bold}L_HOST${font FONT:style=normal} ${color0}${execi 3600 uname -r}${alignr}${acpitemp}°C
 #
 ################
 ##### LOAD #####
@@ -222,6 +222,22 @@ ${top_mem name 4} $alignr ${top_mem mem_res 4}
 #endif
 #ifeq TARGET grandl
 ${top_mem name 5} $alignr ${top_mem mem_res 5}
+#endif
+#
+#ifeq TARGET sandl
+###############
+##### GPU #####
+###############
+${voffset 5}#
+${color1}${font :size=9:style=bold}GPU${font :size=9:style=normal} ${color0}${alignr}PL ${nvidia perflevelcur} Fan ${nvidia fanlevel}% ${nvidia gputemp}°C ${nvidia gpufreqcur}Mhz ${nvidia gpuutil}%
+${nvidiabar gpuutil}
+#
+##############
+##### VRAM ####
+##############
+${voffset 5}#
+${color1}${font :size=9:style=bold}VRAM${font :size=9:style=normal} ${color0}${alignr}${nvidia mem}M/${nvidia memmax}M ${nvidia memperc}%
+${nvidiabar 5,240 memutil 0}
 #endif
 #
 ###############
@@ -322,14 +338,31 @@ ${endif}#
 #################
 #### MythTV #####
 #################
-#ifeq TARGET sandl
-${color1}${font FONT:style=bold}MYTH TV${font FONT:style=normal}${color0}
-${color1}${execi 30 wget -q -o /dev/null -O /dev/stdout http://sandl:6544/misc/overview.qsp  | grep -i "Encoder [123]" | cut -d ">" -f 2- | cut -d "<" -f -1 | fmt -w28 -t}
+##ifeq TARGET sandl
+#${color1}${font FONT:style=bold}MYTH TV${font FONT:style=normal}${color0}
+#${color1}${execi 30 wget -q -o /dev/null -O /dev/stdout http://sandl:6544/misc/overview.qsp  | grep -i "Encoder [123]" | cut -d ">" -f 2- | cut -d "<" -f -1 | fmt -w28 -t}
+##endif
+#
+##ifeq TARGET cordl
+#${color1}${font FONT:style=bold}MYTH TV${font FONT:style=normal}${color0}
+#${color1}${execi 30 wget -q -o /dev/null -O /dev/stdout http://cordl.hnstr58.local:6544/misc/overview.qsp | grep -i "Encoder [12]" | cut -d ">" -f 2- | cut -d "<" -f -1 | fmt -w28 -t}
+##endif
+#
+####################
+#### TVheadend #####
+####################
+#ifeq TARGET cordl
+${color1}${font FONT:style=bold}TVHEADEND${font FONT:style=normal}${color0}
+${color1}Subscriptions${color0} ${alignr} ${color1}${execi 30 wget -q -o /dev/null -O /dev/stdout http://localhost:9981/status.xml | grep -i "<subscriptions>" | grep -o "[0-9]"}
+${color1}Recording Status${color0} ${alignr} ${color1}${execi 30 wget -q -o /dev/null -O /dev/stdout http://localhost:9981/status.xml | grep -e "<next>" -e "<status>" | cut -d ">" -f 2- | cut -d "<" -f -1}
+${color1}${execi 30 wget -q -o /dev/null -O /dev/stdout http://localhost:9981/status.xml | grep "<title>" | cut -d ">" -f 2- | cut -d "<" -f -1 | fmt -w38 -t}
 #endif
 #
-#ifeq TARGET cordl
-${color1}${font FONT:style=bold}MYTH TV${font FONT:style=normal}${color0}
-${color1}${execi 30 wget -q -o /dev/null -O /dev/stdout http://cordl.hnstr58.local:6544/misc/overview.qsp | grep -i "Encoder [12]" | cut -d ">" -f 2- | cut -d "<" -f -1 | fmt -w28 -t}
+#ifeq TARGET sandl
+${color1}${font FONT:style=bold}TVHEADEND${font FONT:style=normal}${color0}
+${color1}Subscriptions${color0} ${alignr} ${color1}${execi 30 wget -q -o /dev/null -O /dev/stdout http://localhost:9981/status.xml | grep -i "<subscriptions>" | grep -o "[0-9]"}
+${color1}Recording Status${color0} ${alignr} ${color1}${execi 30 wget -q -o /dev/null -O /dev/stdout http://localhost:9981/status.xml | grep -e "<next>" -e "<status>" | cut -d ">" -f 2- | cut -d "<" -f -1}
+${color1}${execi 30 wget -q -o /dev/null -O /dev/stdout http://localhost:9981/status.xml | grep "<title>" | cut -d ">" -f 2- | cut -d "<" -f -1 | fmt -w38 -t}
 #endif
 #
 ##################
