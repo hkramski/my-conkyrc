@@ -16,5 +16,5 @@ Run `gpp -DTARGET=$(hostname) conkyrc.master >  $(HOME)/.conkyrc` to make a host
 Sample Output
 --------------
 
-![Sample Output](https://github.com/hkramski/my-conkyrc/blob/master/Screenshot_20170322_215845.png "Sample Output")
+![Sample Output](https://github.com/hkramski/my-conkyrc/blob/master/Screenshot_20240805_194228.png "Sample Output")
 
