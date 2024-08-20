@@ -1,5 +1,6 @@
 my-conkyrc
 ==========
+Project moved to Codeberg: https://codeberg.org/harveyk/my-conkyrc
 
 My unified conkyrc, suitable for several similar, but not identical machines.
 
