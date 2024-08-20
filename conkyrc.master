@@ -5,7 +5,7 @@
 #
 # This is a multi-target, master configuration file for conky.
 #
-# All constants have an optional L_abel variant for display and an internal V_alue.
+# Most constants have an optional L_abel variant for display and an internal V_alue.
 #
 # Run 
 #    gpp -DTARGET=$(hostname) conkyrc.master >  $(HOME)/.conkyrc
@@ -17,13 +17,23 @@
 # define TARGET grandl
 # define TARGET schwindl
 # define TARGET r0838
+# define TARGET R0911
+#
+# For disk temperatures, we move from hddtemp to hwmon. Probably needs the drivetemp kernel module.
+# See /sys/class/hwmon/hwmon*/name to find matching hwmon entries. 
+# Still WIP for most hosts...
 #
 #endif
 #define FONT :size=9
 #define GRAPHDIMS 20,0 white 778899 0 -t
 #ifeq TARGET sandl
 #define L_HOST SANDL
-#define V_HWMON 0 temp 1
+#define V_HWMON_CPU 2 temp 1
+#define V_HWMON_SYS 1 temp 1
+#define V_HWMON_DISK1 4 temp 1
+#define V_HWMON_DISK2 5 temp 1
+#define V_HWMON_DISK3 6 temp 1
+#define V_HWMON_DISK4 8 temp 1
 #define L_FS1 /
 #define V_FS1 /
 #define L_FS2 /data01
@@ -46,7 +56,12 @@
 #endif
 #ifeq TARGET cordl
 #define L_HOST CORDL
-#define V_HWMON 0 temp 1
+#define V_HWMON_CPU 0 temp 1
+#define V_HWMON_SYS 0 temp 1
+#define V_HWMON_DISK1 0 temp 1
+#define V_HWMON_DISK2 0 temp 1
+#define V_HWMON_DISK3 0 temp 1
+#define V_HWMON_DISK4 0 temp 1
 #define L_FS1 /
 #define V_FS1 /
 #define L_FS2 /home
@@ -67,7 +82,12 @@
 #endif
 #ifeq TARGET haspl
 #define L_HOST HASPL
-#define V_HWMON 0 temp 1
+#define V_HWMON_CPU 0 temp 1
+#define V_HWMON_SYS 0 temp 1
+#define V_HWMON_DISK1 0 temp 1
+#define V_HWMON_DISK2 0 temp 1
+#define V_HWMON_DISK3 0 temp 1
+#define V_HWMON_DISK4 0 temp 1
 #define L_FS1 /
 #define V_FS1 /
 #define L_FS2 /mufu
@@ -85,7 +105,12 @@
 #endif
 #ifeq TARGET grandl
 #define L_HOST GRANDL
-#define V_HWMON 0 temp 1
+#define V_HWMON_CPU 0 temp 1
+#define V_HWMON_SYS 0 temp 1
+#define V_HWMON_DISK1 0 temp 1
+#define V_HWMON_DISK2 0 temp 1
+#define V_HWMON_DISK3 0 temp 1
+#define V_HWMON_DISK4 0 temp 1
 #define L_FS1 /
 #define V_FS1 /
 #define L_FS2 /home
@@ -101,7 +126,12 @@
 #endif
 #ifeq TARGET schwindl
 #define L_HOST SCHWINDL
-#define V_HWMON 0 temp 1
+#define V_HWMON_CPU 0 temp 1
+#define V_HWMON_SYS 0 temp 1
+#define V_HWMON_DISK1 0 temp 1
+#define V_HWMON_DISK2 0 temp 1
+#define V_HWMON_DISK3 0 temp 1
+#define V_HWMON_DISK4 0 temp 1
 #define L_FS1 /
 #define V_FS1 /
 #define L_FS2 /home
@@ -117,7 +147,12 @@
 #endif
 #ifeq TARGET r0838
 #define L_HOST R0838
-#define V_HWMON 0 temp 1
+#define V_HWMON_CPU 0 temp 1
+#define V_HWMON_SYS 0 temp 1
+#define V_HWMON_DISK1 0 temp 1
+#define V_HWMON_DISK2 0 temp 1
+#define V_HWMON_DISK3 0 temp 1
+#define V_HWMON_DISK4 0 temp 1
 #define L_FS1 /
 #define V_FS1 /
 #define L_DISK1 nvme0n1p5
@@ -126,6 +161,30 @@
 #define V_LANDEV enp4s0f4u2u3
 #define V_WLANDEV wlp1s0
 #define V_BATTERY BAT0
+#endif
+#ifeq TARGET R0911
+#define L_HOST R0911
+#define V_HWMON_CPU 7 temp 1
+#define V_HWMON_SYS 0 temp 1
+#define V_HWMON_DISK1 0 temp 1
+#define V_HWMON_DISK2 0 temp 1
+#define V_HWMON_DISK3 0 temp 1
+#define V_HWMON_DISK4 0 temp 1
+#define L_FS1 /
+#define V_FS1 /
+#define L_FS2 Windows
+#define V_FS2 /media/dia_kramski/10CE8B70CE8B4CC2
+#define L_FS3 Data
+#define V_FS3 /media/dia_kramski/DATA_Volume
+#define L_DISK1 sda
+#define V_DISK1 /dev/sda
+#define L_DISK2 nvme0n1
+#define V_DISK2 /dev/nvme0n1
+#define L_DISK3 nvme1n1
+#define V_DISK3 /dev/nvme1n1
+#define L_LANDEV LAN
+#define V_LANDEV eno1
+#define V_WLANDEV wlp0s20f3
 #endif
 # This is a configuration file for conky, made from conkyrc.master (by kramski@web.de), to be used on TARGET.
 #-----------------------------------------------------------------------------------------------------------------------------------
@@ -153,8 +212,12 @@ conky.config = {
     draw_shades = false,
     extra_newline = false,
     font = 'FONT',
-    gap_x = 10,
-    gap_y = 0,
+#ifeq TARGET R0911
+    gap_x = 40,
+#else
+    gap_x = 10, 
+#endif 
+    gap_y = 10,
     maximum_width = 240,
     minimum_height = 730,
     minimum_width = 240,
@@ -164,9 +227,11 @@ conky.config = {
     out_to_stderr = false,
     own_window = true,
     own_window_argb_visual = true,
+    own_window_argb_value = 50,
+    own_window_colour = '000000',
     own_window_class = 'Conky',
     own_window_hints = 'undecorated,below,skip_taskbar,sticky,skip_pager',
-    own_window_transparent = true,
+    own_window_transparent = false,
     own_window_type = 'normal',
     short_units = true,
     show_graph_range = false,
@@ -182,7 +247,7 @@ conky.text = [[
 ####################
 ##### System   #####
 ####################
-${color1}${font FONT:style=bold}L_HOST${font FONT:style=normal} ${color0}${execi 3600 uname -r}${alignr}${acpitemp}°C
+${color1}${font FONT:style=bold}L_HOST${font FONT:style=normal} ${color0}${execi 3600 uname -r}${alignr}${hwmon V_HWMON_SYS}°C
 #
 ################
 ##### LOAD #####
@@ -194,14 +259,14 @@ ${loadgraph GRAPHDIMS}
 ###############
 ##### CPU #####
 ###############
-${color1}${font FONT:style=bold}CPU${font FONT:style=normal} ${color0}${alignr}${hwmon V_HWMON}°C ${freq}Mhz ${cpu cpu0}%
+${color1}${font FONT:style=bold}CPU${font FONT:style=normal} ${color0}${alignr}${hwmon V_HWMON_CPU}°C ${freq}Mhz ${cpu cpu0}%
 ${cpubar cpu0}
 ${top name 1} $alignr ${top cpu 1}%
 ${top name 2} $alignr ${top cpu 2}%
 ${top name 3} $alignr ${top cpu 3}%
 ${top name 4} $alignr ${top cpu 4}%
-#ifeq TARGET sandl
-#${top name 5} $alignr ${top cpu 5}%
+#ifeq TARGET R0911
+${top name 5} $alignr ${top cpu 5}%
 #endif
 #ifeq TARGET grandl
 ${top name 5} $alignr ${top cpu 5}%
@@ -217,8 +282,8 @@ ${top_mem name 1} $alignr ${top_mem mem_res 1}
 ${top_mem name 2} $alignr ${top_mem mem_res 2}
 ${top_mem name 3} $alignr ${top_mem mem_res 3}
 ${top_mem name 4} $alignr ${top_mem mem_res 4}
-#ifeq TARGET sandl
-#${top_mem name 5} $alignr ${top_mem mem_res 5}
+#ifeq TARGET R0911
+${top_mem name 5} $alignr ${top_mem mem_res 5}
 #endif
 #ifeq TARGET grandl
 ${top_mem name 5} $alignr ${top_mem mem_res 5}
@@ -229,14 +294,30 @@ ${top_mem name 5} $alignr ${top_mem mem_res 5}
 ##### GPU #####
 ###############
 ${voffset 5}#
-${color1}${font :size=9:style=bold}GPU${font :size=9:style=normal} ${color0}${alignr}PL ${nvidia perflevelcur} Fan ${nvidia fanlevel}% ${nvidia gputemp}°C ${nvidia gpufreqcur}Mhz ${nvidia gpuutil}%
+${color1}${font :size=9:style=bold}GPU${font :size=9:style=normal} ${color0}${alignr}PL${nvidia perflevelcur} Fan ${nvidia fanlevel}% ${nvidia gputemp}°C ${nvidia gpufreq}Mhz ${nvidia gpuutil}%
 ${nvidiabar gpuutil}
 #
 ##############
 ##### VRAM ####
 ##############
 ${voffset 5}#
-${color1}${font :size=9:style=bold}VRAM${font :size=9:style=normal} ${color0}${alignr}${nvidia mem}M/${nvidia memmax}M ${nvidia memperc}%
+${color1}${font :size=9:style=bold}VRAM${font :size=9:style=normal} ${color0}${alignr}${nvidia mem}M/${nvidia memmax}M ${nvidia memfreq}Mhz ${nvidia memperc}%
+${nvidiabar 5,240 memutil 0}
+#endif
+#
+#ifeq TARGET R0911
+###############
+##### GPU #####
+###############
+${voffset 5}#
+${color1}${font :size=9:style=bold}GPU${font :size=9:style=normal} ${color0}${alignr}PL${nvidia perflevelcur} Fan ${nvidia fanlevel}% ${nvidia gputemp}°C ${nvidia gpufreq}Mhz ${nvidia gpuutil}%
+${nvidiabar gpuutil}
+#
+##############
+##### VRAM ####
+##############
+${voffset 5}#
+${color1}${font :size=9:style=bold}VRAM${font :size=9:style=normal} ${color0}${alignr}${nvidia mem}M/${nvidia memmax}M ${nvidia memfreq}Mhz ${nvidia memperc}%
 ${nvidiabar 5,240 memutil 0}
 #endif
 #
@@ -247,28 +328,28 @@ ${voffset 5}#
 ${color1}${font FONT:style=bold}DISK${font FONT:style=normal} ${color0}${alignr}${diskio}
 #
 #ifdef V_DISK1
-${color1}L_DISK1${color0}${alignr}${diskio_read V_DISK1}/${diskio_write V_DISK1} ${hddtemp V_DISK1}°C
+${color1}L_DISK1${color0}${alignr}${diskio_read V_DISK1}/${diskio_write V_DISK1} ${hwmon V_HWMON_DISK1}°C
 ${diskiograph_read V_DISK1 GRAPHDIMS}
 ${voffset -10}#
 ${diskiograph_write V_DISK1 GRAPHDIMS}
 #endif
 #
 #ifdef V_DISK2
-${color1}L_DISK2${color0}${alignr}${diskio_read V_DISK2}/${diskio_write V_DISK2} ${hddtemp V_DISK2}°C
+${color1}L_DISK2${color0}${alignr}${diskio_read V_DISK2}/${diskio_write V_DISK2} ${hwmon V_HWMON_DISK2}°C
 ${diskiograph_read V_DISK2 GRAPHDIMS}
 ${voffset -10}#
 ${diskiograph_write V_DISK2 GRAPHDIMS}
 #endif
 #
 #ifdef V_DISK3
-${color1}L_DISK3${color0}${alignr}${diskio_read V_DISK3}/${diskio_write V_DISK3} ${hddtemp V_DISK3}°C
+${color1}L_DISK3${color0}${alignr}${diskio_read V_DISK3}/${diskio_write V_DISK3} ${hwmon V_HWMON_DISK3}°C
 ${diskiograph_read V_DISK3 GRAPHDIMS}
 ${voffset -10}#
 ${diskiograph_write V_DISK3 GRAPHDIMS}
 #endif
 #
 #ifdef V_DISK4
-${color1}L_DISK4${color0}${alignr}${diskio_read V_DISK4}/${diskio_write V_DISK4} ${hddtemp V_DISK4}°C
+${color1}L_DISK4${color0}${alignr}${diskio_read V_DISK4}/${diskio_write V_DISK4} ${hwmon V_HWMON_DISK4}°C
 ${diskiograph_read V_DISK4 GRAPHDIMS}
 ${voffset -10}#
 ${diskiograph_write V_DISK4 GRAPHDIMS}
